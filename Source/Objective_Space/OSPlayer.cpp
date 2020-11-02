@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "OSWeapon.h"
 #include "Components/ChildActorComponent.h"
+#include "OSUsableEntity.h"
 
 // Sets default values
 AOSPlayer::AOSPlayer()
@@ -40,6 +41,8 @@ void AOSPlayer::BeginPlay()
 void AOSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	RaycastInFront();
 
 	if (GetVelocity().Size() <= 0)
 	{
@@ -79,6 +82,8 @@ void AOSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, this, &AOSPlayer::StopFire);
 
 	PlayerInputComponent->BindAction("Reload", EInputEvent::IE_Pressed, this, &AOSPlayer::Reload);
+
+	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &AOSPlayer::UseInteractable);
 }
 
 void AOSPlayer::MoveForward(float aValue)
@@ -206,4 +211,49 @@ void AOSPlayer::Reload()
 		StopSprint();
 		PlayAnimationReload();
 	}
+}
+
+void AOSPlayer::RaycastInFront()
+{
+	FHitResult OutHit;
+	FVector Start = myCameraComponent->GetComponentLocation();
+
+	FVector ForwardVector = myCameraComponent->GetForwardVector();
+	FVector End = ((ForwardVector * myRaycastLength) + Start);
+	FCollisionQueryParams CollisionParams;
+
+	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams))
+	{
+		if (OutHit.Actor == nullptr)
+		{
+			ShowInteractUI(false);
+			myLastUsableEntity = nullptr;
+			return;
+		}
+		
+		AOSUsableEntity* entity = Cast<AOSUsableEntity>(OutHit.Actor);
+		if (entity != nullptr)
+		{
+			ShowInteractUI(true);
+			myLastUsableEntity = entity;
+		}
+		else
+		{
+			myLastUsableEntity = nullptr;
+			ShowInteractUI(false);
+		}
+	}
+	else
+	{
+		myLastUsableEntity = nullptr;
+		ShowInteractUI(false);
+	}
+}
+
+void AOSPlayer::UseInteractable()
+{
+	if (myLastUsableEntity == nullptr)
+		return;
+
+	UE_LOG(LogTemp, Warning, TEXT("Interacting with %s"), *myLastUsableEntity->myName);
 }

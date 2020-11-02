@@ -11,6 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class AOSWeapon;
 class UChildActorComponent;
+class AOSUsableEntity;
 
 UENUM()
 enum MovementType
@@ -75,6 +76,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = OS)
 	void PlayAnimationReload();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = OS)
+	void ShowInteractUI(bool aNewState);
+
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = OS)
 	USkeletalMeshComponent* myArmMesh = nullptr;
@@ -103,8 +107,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	float mySprintRatio = 1.5f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
+	float myRaycastLength = 1000;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PCK)
 	TSubclassOf<AOSWeapon> myWeaponToSpawn;
+
+private:
+	void RaycastInFront();
+
+	void UseInteractable();
 
 private:
 	float myCurrentPitchAngle = 0;
@@ -117,4 +129,6 @@ private:
 	AOSWeapon* myWeapon = nullptr;
 
 	bool myWantToShoot = false;
+
+	AOSUsableEntity* myLastUsableEntity = nullptr;
 };
