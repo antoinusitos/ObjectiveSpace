@@ -24,3 +24,12 @@ void AOSUsableEntity::Tick(float DeltaTime)
 
 }
 
+const FString AOSUsableEntity::GetInteractionText()
+{
+	return "";
+}
+
+void AOSUsableEntity::Interact()
+{
+
+}

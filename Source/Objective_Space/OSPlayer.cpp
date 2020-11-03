@@ -226,7 +226,7 @@ void AOSPlayer::RaycastInFront()
 	{
 		if (OutHit.Actor == nullptr)
 		{
-			ShowInteractUI(false);
+			ShowInteractUI("");
 			myLastUsableEntity = nullptr;
 			return;
 		}
@@ -234,19 +234,19 @@ void AOSPlayer::RaycastInFront()
 		AOSUsableEntity* entity = Cast<AOSUsableEntity>(OutHit.Actor);
 		if (entity != nullptr)
 		{
-			ShowInteractUI(true);
+			ShowInteractUI(entity->GetInteractionText());
 			myLastUsableEntity = entity;
 		}
 		else
 		{
 			myLastUsableEntity = nullptr;
-			ShowInteractUI(false);
+			ShowInteractUI("");
 		}
 	}
 	else
 	{
 		myLastUsableEntity = nullptr;
-		ShowInteractUI(false);
+		ShowInteractUI("");
 	}
 }
 
@@ -256,4 +256,5 @@ void AOSPlayer::UseInteractable()
 		return;
 
 	UE_LOG(LogTemp, Warning, TEXT("Interacting with %s"), *myLastUsableEntity->myName);
+	myLastUsableEntity->Interact();
 }

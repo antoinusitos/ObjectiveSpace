@@ -77,7 +77,7 @@ public:
 	void PlayAnimationReload();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = OS)
-	void ShowInteractUI(bool aNewState);
+	void ShowInteractUI(const FString& aText);
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = OS)

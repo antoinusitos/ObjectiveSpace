@@ -26,4 +26,9 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	FString myName = "";
+
+public:
+	virtual const FString GetInteractionText();
+
+	virtual void Interact();
 };
