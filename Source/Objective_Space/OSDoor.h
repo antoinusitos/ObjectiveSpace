@@ -6,6 +6,8 @@
 #include "OSStaticEntity.h"
 #include "OSDoor.generated.h"
 
+class AOSPlayer;
+
 /**
  * 
  */
@@ -15,7 +17,7 @@ class OBJECTIVE_SPACE_API AOSDoor : public AOSStaticEntity
 	GENERATED_BODY()
 
 public:
-	virtual void Interact() override;
+	virtual void Interact(AOSPlayer* aPlayer) override;
 
 	virtual const FString GetInteractionText();
 

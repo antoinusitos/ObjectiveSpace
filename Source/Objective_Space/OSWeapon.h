@@ -51,4 +51,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = OS)
 	void Reload();
+
+	UFUNCTION(BlueprintCallable, Category = OS)
+	void ShowMesh(bool aNewState);
 };

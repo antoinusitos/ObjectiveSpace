@@ -6,6 +6,8 @@
 #include "OSUsableEntity.h"
 #include "OSStaticEntity.generated.h"
 
+class AOSPlayer;
+
 /**
  * 
  */
@@ -25,5 +27,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = OS)
 	virtual void PostAnimation();
 
-	virtual void Interact() override;
+	virtual void Interact(AOSPlayer* aPlayer) override;
 };

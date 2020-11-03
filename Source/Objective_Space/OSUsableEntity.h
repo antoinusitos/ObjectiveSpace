@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "OSUsableEntity.generated.h"
 
+class AOSPlayer;
+
 UCLASS()
 class OBJECTIVE_SPACE_API AOSUsableEntity : public AActor
 {
@@ -30,5 +32,5 @@ public:
 public:
 	virtual const FString GetInteractionText();
 
-	virtual void Interact();
+	virtual void Interact(AOSPlayer* aPlayer);
 };

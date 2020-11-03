@@ -35,6 +35,8 @@ void AOSPlayer::BeginPlay()
 
 	SpawnUI();
 	
+	myWeaponIsHolstered = true;
+	UpdateWeaponUI();
 }
 
 // Called every frame
@@ -84,6 +86,8 @@ void AOSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Reload", EInputEvent::IE_Pressed, this, &AOSPlayer::Reload);
 
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &AOSPlayer::UseInteractable);
+
+	PlayerInputComponent->BindAction("Holster", EInputEvent::IE_Pressed, this, &AOSPlayer::Holster);
 }
 
 void AOSPlayer::MoveForward(float aValue)
@@ -256,5 +260,34 @@ void AOSPlayer::UseInteractable()
 		return;
 
 	UE_LOG(LogTemp, Warning, TEXT("Interacting with %s"), *myLastUsableEntity->myName);
-	myLastUsableEntity->Interact();
+	myLastUsableEntity->Interact(this);
+}
+
+void AOSPlayer::Holster()
+{
+	if (myIsSwitchingWeapon)
+		return;
+
+	if (myWeapon == nullptr)
+		return;
+
+	myIsSwitchingWeapon = true;
+	myWeaponIsHolstered = !myWeaponIsHolstered;
+	HolsterWeapon(myWeaponIsHolstered);
+	UpdateWeaponUI();
+}
+
+const bool AOSPlayer::GetWeaponIsHolstered()
+{
+	return myWeaponIsHolstered;
+}
+
+void AOSPlayer::SetWeapon(AOSWeapon* aWeapon)
+{
+	myWeapon = aWeapon;
+}
+
+void AOSPlayer::UpdateWeaponUI()
+{
+	BPUpdateWeaponUI();
 }

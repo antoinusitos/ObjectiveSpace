@@ -62,6 +62,15 @@ public:
 
 	  void Reload();
 
+	  void Holster();
+
+	  UFUNCTION(BlueprintCallable, BlueprintPure, Category = OS)
+	  const bool GetWeaponIsHolstered();
+
+	  void SetWeapon(AOSWeapon* aWeapon);
+
+	  void UpdateWeaponUI();
+
 //Link to blueprint
 public:
 	UFUNCTION(BlueprintImplementableEvent, Category = OS)
@@ -78,6 +87,12 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = OS)
 	void ShowInteractUI(const FString& aText);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = OS)
+	void HolsterWeapon(bool aNewState);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = OS)
+	void BPUpdateWeaponUI();
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = OS)
@@ -113,6 +128,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PCK)
 	TSubclassOf<AOSWeapon> myWeaponToSpawn;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PCK)
+	bool myIsSwitchingWeapon = false;
+
 private:
 	void RaycastInFront();
 
@@ -129,6 +147,8 @@ private:
 	AOSWeapon* myWeapon = nullptr;
 
 	bool myWantToShoot = false;
+
+	bool myWeaponIsHolstered = false;
 
 	AOSUsableEntity* myLastUsableEntity = nullptr;
 };

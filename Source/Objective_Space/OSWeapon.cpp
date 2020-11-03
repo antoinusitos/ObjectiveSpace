@@ -80,3 +80,8 @@ void AOSWeapon::Reload()
 		myBulletInStock -= diff;
 	}
 }
+
+void AOSWeapon::ShowMesh(bool aNewState)
+{
+	myWeaponMesh->SetVisibility(aNewState);
+}
