@@ -12,9 +12,10 @@ class UCameraComponent;
 class AOSWeapon;
 class UChildActorComponent;
 class AOSUsableEntity;
+class UOSInventoryComponent;
 
 UENUM()
-enum MovementType
+enum EMovementType
 {
 	WALKING     UMETA(DisplayName = "WALKING"),
 	RUNNING     UMETA(DisplayName = "RUNNING"),
@@ -94,6 +95,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = OS)
 	void BPUpdateWeaponUI();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = OS)
+	void ShowTutoHint(const FString& aHintToShow, float aDelayToShow);
+
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = OS)
 	USkeletalMeshComponent* myArmMesh = nullptr;
@@ -111,6 +115,9 @@ public:
 	UChildActorComponent* myChildActorComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
+	UOSInventoryComponent* myInventoryComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	float myBaseSpeed = 600;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
@@ -125,10 +132,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	float myRaycastLength = 1000;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PCK)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	TSubclassOf<AOSWeapon> myWeaponToSpawn;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PCK)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	bool myIsSwitchingWeapon = false;
 
 private:
@@ -139,7 +146,7 @@ private:
 private:
 	float myCurrentPitchAngle = 0;
 
-	MovementType myMovementType = MovementType::RUNNING;
+	TEnumAsByte<EMovementType> myMovementType = EMovementType::RUNNING;
 
 	float myMovementForward = 0;
 	float myMovementRight = 0;

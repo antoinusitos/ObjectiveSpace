@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "OSPickup.h"
 #include "OSWeapon.generated.h"
 
 class USkeletalMeshComponent;
 
 UCLASS()
-class OBJECTIVE_SPACE_API AOSWeapon : public AActor
+class OBJECTIVE_SPACE_API AOSWeapon : public AOSPickup
 {
 	GENERATED_BODY()
 	
@@ -54,4 +54,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = OS)
 	void ShowMesh(bool aNewState);
+
+	virtual void Interact(AOSPlayer* aPlayer) override;
+
+	virtual const FString GetInteractionText() override;
 };

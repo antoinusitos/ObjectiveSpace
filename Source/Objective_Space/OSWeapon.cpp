@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "OSWeapon.h"
+#include "OSPlayer.h"
 #include "Components/SkeletalMeshComponent.h"
 
 // Sets default values
@@ -10,6 +11,7 @@ AOSWeapon::AOSWeapon()
 	PrimaryActorTick.bCanEverTick = true;
 
 	myWeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
+	RootComponent = myWeaponMesh;
 }
 
 // Called when the game starts or when spawned
@@ -84,4 +86,24 @@ void AOSWeapon::Reload()
 void AOSWeapon::ShowMesh(bool aNewState)
 {
 	myWeaponMesh->SetVisibility(aNewState);
+}
+
+void AOSWeapon::Interact(AOSPlayer* aPlayer)
+{
+	if (aPlayer->myChildActorComponent != nullptr)
+	{
+		aPlayer->myChildActorComponent->SetChildActorClass(GetClass());
+		aPlayer->myChildActorComponent->CreateChildActor();
+		aPlayer->SetWeapon(Cast<AOSWeapon>(aPlayer->myChildActorComponent->GetChildActor()));
+		if (aPlayer->GetWeaponIsHolstered())
+		{
+			aPlayer->Holster();
+			aPlayer->UpdateWeaponUI();
+		}
+	}
+}
+
+const FString AOSWeapon::GetInteractionText()
+{
+	return FString("E to get Weapon");
 }

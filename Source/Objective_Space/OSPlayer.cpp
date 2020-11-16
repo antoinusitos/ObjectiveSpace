@@ -8,6 +8,7 @@
 #include "OSWeapon.h"
 #include "Components/ChildActorComponent.h"
 #include "OSUsableEntity.h"
+#include "OSInventoryComponent.h"
 
 // Sets default values
 AOSPlayer::AOSPlayer()
@@ -26,6 +27,9 @@ AOSPlayer::AOSPlayer()
 
 	myChildActorComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("ChildActorComponent"));
 	myChildActorComponent->SetupAttachment(myArmMesh, FName("R_GunSocket"));
+
+	myInventoryComponent = CreateDefaultSubobject<UOSInventoryComponent>(TEXT("InventoryComponent"));
+	myInventoryComponent->Activate();
 }
 
 // Called when the game starts or when spawned
@@ -33,9 +37,13 @@ void AOSPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (myInventoryComponent != nullptr)
+		myInventoryComponent->myOwner = this;
+
 	SpawnUI();
 	
 	myWeaponIsHolstered = true;
+	HolsterWeapon(true);
 	UpdateWeaponUI();
 }
 
@@ -157,17 +165,17 @@ void AOSPlayer::LookUp(float aValue)
 
 void AOSPlayer::StartSprint()
 {
-	myMovementType = MovementType::SPRINTING;
+	myMovementType = EMovementType::SPRINTING;
 	ChangedMovementType();
 }
 
 void AOSPlayer::StopSprint()
 {
-	if (myMovementType != MovementType::SPRINTING)
+	if (myMovementType != EMovementType::SPRINTING)
 		return;
 
 	SetAnimationSprint(false);
-	myMovementType = MovementType::RUNNING;
+	myMovementType = EMovementType::RUNNING;
 	ChangedMovementType();
 }
 
@@ -175,20 +183,20 @@ void AOSPlayer::ChangedMovementType()
 {
 	switch (myMovementType)
 	{
-		case MovementType::RUNNING:
+		case EMovementType::RUNNING:
 		{
 			GetCharacterMovement()->MaxWalkSpeed = myBaseSpeed;
 			break;
 		}
 
-		case MovementType::SPRINTING:
+		case EMovementType::SPRINTING:
 		{
 			SetAnimationSprint(true);
 			GetCharacterMovement()->MaxWalkSpeed = myBaseSpeed * mySprintRatio;
 			break;
 		}
 
-		case MovementType::WALKING:
+		case EMovementType::WALKING:
 		{
 			GetCharacterMovement()->MaxWalkSpeed = myBaseSpeed * myWalkRatio;
 			break;
@@ -260,7 +268,15 @@ void AOSPlayer::UseInteractable()
 		return;
 
 	UE_LOG(LogTemp, Warning, TEXT("Interacting with %s"), *myLastUsableEntity->myName);
-	myLastUsableEntity->Interact(this);
+	AOSPickup* aPickup = Cast<AOSPickup>(myLastUsableEntity);
+	if (aPickup != nullptr)
+	{
+		myInventoryComponent->PickupItem(aPickup);
+	}
+	else
+	{
+		myLastUsableEntity->Interact(this);
+	}
 }
 
 void AOSPlayer::Holster()
