@@ -31,17 +31,17 @@ private:
 	AOSData* myData = nullptr;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SpawnParams)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	int myGold = 0;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SpawnParams)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	int myBullets = 0;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SpawnParams)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	TArray<FInventoryInfo> myInventory;
 
 	//Item that cannot be sold or removed
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SpawnParams)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	TArray<FInventoryInfo> myQuestInventory;
 
 	AOSPlayer* myOwner = nullptr;

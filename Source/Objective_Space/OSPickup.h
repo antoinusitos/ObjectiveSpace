@@ -24,7 +24,4 @@ public:
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = OS)
 	UStaticMeshComponent* myMesh = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
-	int myID = -1;
 };

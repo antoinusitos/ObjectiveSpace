@@ -13,6 +13,7 @@ class AOSWeapon;
 class UChildActorComponent;
 class AOSUsableEntity;
 class UOSInventoryComponent;
+class UOSQuestComponent;
 
 UENUM()
 enum EMovementType
@@ -116,6 +117,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	UOSInventoryComponent* myInventoryComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
+	UOSQuestComponent* myQuestComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	float myBaseSpeed = 600;

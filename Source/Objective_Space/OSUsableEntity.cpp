@@ -32,5 +32,4 @@ const FString AOSUsableEntity::GetInteractionText()
 
 void AOSUsableEntity::Interact(AOSPlayer* aPlayer)
 {
-
 }

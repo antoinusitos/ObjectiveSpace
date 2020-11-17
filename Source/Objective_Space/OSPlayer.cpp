@@ -9,6 +9,7 @@
 #include "Components/ChildActorComponent.h"
 #include "OSUsableEntity.h"
 #include "OSInventoryComponent.h"
+#include "OSQuestComponent.h"
 
 // Sets default values
 AOSPlayer::AOSPlayer()
@@ -30,6 +31,9 @@ AOSPlayer::AOSPlayer()
 
 	myInventoryComponent = CreateDefaultSubobject<UOSInventoryComponent>(TEXT("InventoryComponent"));
 	myInventoryComponent->Activate();
+
+	myQuestComponent = CreateDefaultSubobject<UOSQuestComponent>(TEXT("QuestComponent"));
+	myQuestComponent->Activate();
 }
 
 // Called when the game starts or when spawned
@@ -276,6 +280,10 @@ void AOSPlayer::UseInteractable()
 	else
 	{
 		myLastUsableEntity->Interact(this);
+		if (myQuestComponent != nullptr)
+		{
+			myQuestComponent->UsedItem(myLastUsableEntity->myID);
+		}
 	}
 }
 

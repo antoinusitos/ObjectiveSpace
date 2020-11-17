@@ -29,6 +29,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
 	FString myName = "";
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
+	int myID = -1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
+	int myNumberOfUse = -1;
+
 public:
 	virtual const FString GetInteractionText();
 

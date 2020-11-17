@@ -5,13 +5,32 @@
 
 const FString AOSDoor::GetInteractionText()
 {
+	if (myIsLocked)
+	{
+		return FString("Door is locked");
+	}
+	else if (!myOpenByHand)
+	{
+		return FString("");
+	}
+
 	return FString("Open Door");
 }
 
 void AOSDoor::Interact(AOSPlayer* aPlayer)
 {
+	if (aPlayer != nullptr && !myOpenByHand)
+		return;
+
 	if (myIsOpening)
 		return;
+
+	if (myNumberOfUse == 0)
+		return;
+	else if (myNumberOfUse > 0)
+	{
+		myNumberOfUse--;
+	}
 
 	myIsOpening = true;
 	PlayAnimation();

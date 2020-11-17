@@ -29,6 +29,21 @@ struct FInventoryInfo
 };
 
 USTRUCT(BlueprintType)
+struct FQuestInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
+	int myID = -1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
+	int myActivatedItemID = -1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
+	int myPostActivatedItemID = -1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OS)
+	bool myQuestCompleted = false;
+};
+
+USTRUCT(BlueprintType)
 struct FItemInfo
 {
 	GENERATED_USTRUCT_BODY()
